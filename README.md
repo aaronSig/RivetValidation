@@ -1,7 +1,16 @@
-# rivet-validation
+# RivetValidation
 
-[![Version](http://cocoapod-badges.herokuapp.com/v/rivet-validation/badge.png)](http://cocoadocs.org/docsets/rivet-validation)
-[![Platform](http://cocoapod-badges.herokuapp.com/p/rivet-validation/badge.png)](http://cocoadocs.org/docsets/rivet-validation)
+[![Version](http://cocoapod-badges.herokuapp.com/v/rivet-validation/badge.png)](http://cocoadocs.org/docsets/RivetValidation)
+[![Platform](http://cocoapod-badges.herokuapp.com/p/rivet-validation/badge.png)](http://cocoadocs.org/docsets/RivetValidation)
+
+A simple util to add validation to UITextFields. Supports setting validation parameters via interface builder (set keyPath).
+
+Validation methods available:
+ - required fields
+ - min length
+ - max length
+ - alpha, numeric or alphanumeric text only
+ - email addresses
 
 ## Usage
 
@@ -14,11 +23,11 @@ To run the example project; clone the repo, and run `pod install` from the Proje
 rivet-validation is available through [CocoaPods](http://cocoapods.org), to install
 it simply add the following line to your Podfile:
 
-    pod "rivet-validation"
+    pod "RivetValidation"
 
 ## Author
 
-Aaron Signorelli, aaron.signorelli@bullorbear.com
+Aaron Signorelli, @aaronSig
 
 ## License
 
