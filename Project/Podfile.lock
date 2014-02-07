@@ -1,0 +1,14 @@
+PODS:
+  - RivetValidation (0.1.0)
+
+DEPENDENCIES:
+  - RivetValidation (from `../RivetValidation.podspec`)
+
+EXTERNAL SOURCES:
+  RivetValidation:
+    :path: ../RivetValidation.podspec
+
+SPEC CHECKSUMS:
+  RivetValidation: 3919cefee7e10ae82c4642559d642a7118e55ab5
+
+COCOAPODS: 0.28.0
