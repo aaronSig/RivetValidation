@@ -9,11 +9,16 @@
 #import "RBValidatingTextField.h"
 #import "MTKObserving.h"
 #import "StringUtil.h"
-#import <QuartzCore/QuartzCore.h>
 
 @implementation RBValidatingTextField
 
 @synthesize isValid, required, minLength, maxLength, validationRegex;
+
+static id<RBValidatingTextFieldDelegate> _defaultDelegate = nil;
+
++(void) setDefaultUIValidationDelegate:(id<RBValidatingTextFieldDelegate>) aDefaultDelegate {
+    _defaultDelegate = aDefaultDelegate;
+}
 
 -(id) init {
     self = [super init];
@@ -43,8 +48,11 @@
     isValid = YES;
     _pristine = YES;
     self.required = NO;
-    self.minLength = 0;
+    self.minLength = -1;
     self.maxLength = INT32_MAX;
+    if(!self.validationDelegate) {
+        self.validationDelegate = _defaultDelegate;
+    }
 }
 
 -(void) willMoveToSuperview:(UIView *)newSuperview {
@@ -93,7 +101,6 @@
     if(self.required) {
         valid &= [StringUtil isNotBlank:testStr];
     }
-    
     valid &= [StringUtil string:testStr isLongerThan:self.minLength andShorterThan:self.maxLength];
     
     if([StringUtil isNotBlank:self.validationRegex])
@@ -132,20 +139,6 @@
         [self.validationDelegate textField:self validationStateDidChange:self.isValid];
         return;
     }
-    
-    //Default validation notification
-    UIColor *highlight = self.isValid ? [UIColor blueColor] : [UIColor redColor];
-    self.layer.shadowColor = highlight.CGColor;
-    self.layer.shadowRadius = 2.0;
-    self.layer.shadowOffset = CGSizeMake(0.0, 0.0);
-    self.layer.shadowOpacity = 1.0;
-    
-    self.textColor = highlight;
-    
-    self.clipsToBounds = NO;
-    
-    self.layer.borderColor = highlight.CGColor;
-    self.layer.borderWidth = 1.0;
 }
 
 -(void) hasFinishedEditing {
@@ -154,9 +147,6 @@
             [self.validationDelegate clearUIValidationStateForTextField:self];
             return;
         }
-        self.layer.borderColor = [UIColor clearColor].CGColor;
-        self.layer.shadowColor = [UIColor clearColor].CGColor;
-        self.textColor = [UIColor blackColor];
     }
 }
 

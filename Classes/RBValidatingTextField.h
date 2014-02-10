@@ -42,10 +42,17 @@
 @property(nonatomic, copy) BOOL (^validationBlock)(NSString *);
 
 /*
+ Set a delegate globally to handle showing and hiding validation states on the UI
+ */
++(void) setDefaultUIValidationDelegate:(id<RBValidatingTextFieldDelegate>) aDefaultDelegate;
+
+/*
  Manually force a validation check to run.
  Returns true if the text field is valid
  */
 -(BOOL) validate;
+
+-(void) initialise;
 
 @end
 
