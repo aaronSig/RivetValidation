@@ -143,7 +143,7 @@ static id<RBValidatingTextFieldDelegate> _defaultDelegate = nil;
 
 -(void) hasFinishedEditing {
     if([self validate]){
-        if(self.validationDelegate) {
+        if(self.validationDelegate && [self.validationDelegate respondsToSelector:@selector(clearUIValidationStateForTextField:)]) {
             [self.validationDelegate clearUIValidationStateForTextField:self];
             return;
         }
