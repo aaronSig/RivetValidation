@@ -1,5 +1,7 @@
 PODS:
-  - RivetValidation (0.1.0)
+  - Block-KVO (2.2.1)
+  - RivetValidation (0.1.0):
+    - Block-KVO (~> 2.2.1)
 
 DEPENDENCIES:
   - RivetValidation (from `../RivetValidation.podspec`)
@@ -9,6 +11,7 @@ EXTERNAL SOURCES:
     :path: ../RivetValidation.podspec
 
 SPEC CHECKSUMS:
-  RivetValidation: 3919cefee7e10ae82c4642559d642a7118e55ab5
+  Block-KVO: 7b298fb4617e948179b4c7725569feff7bd58337
+  RivetValidation: ef0830926e14f7cdf44e1aaaab3ae6daaef57bd5
 
 COCOAPODS: 0.28.0

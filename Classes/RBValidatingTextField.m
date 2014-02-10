@@ -7,7 +7,7 @@
 //
 
 #import "RBValidatingTextField.h"
-#import "NSObject+BlockObservation.h"
+#import "MTKObserving.h"
 #import "StringUtil.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -41,6 +41,7 @@
 
 -(void) initialise {
     isValid = YES;
+    _pristine = YES;
     self.required = NO;
     self.minLength = 0;
     self.maxLength = INT32_MAX;
@@ -53,20 +54,16 @@
 #pragma mark - catching text changes
 -(void) attachObservers {
     //Catch when the user enters text
+    [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(textFieldTextDidBeginEditing) name:@"UITextFieldTextDidBeginEditingNotification" object:self];
+    
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(validate) name:@"UITextFieldTextDidChangeNotification" object:self];
     
     //Catch when the user enters text
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(hasFinishedEditing) name:@"UITextFieldTextDidEndEditingNotification" object:self];
     
     //Catch if the code sets the text.
-    __weak id this = self;
-    [self watchKeyPath:@"text" task:^(id obj, NSDictionary *change) {
-        [this validate];
-    }];
-    
-    [self watchKeyPath:@"isValid" task:^(id obj, NSDictionary *change) {
-        [this flushValidationStateToUI];
-    }];
+    [self observeProperty:@keypath(self.text) withSelector:@selector(validateTextFieldIgnoreIfPristine)];
+    [self observeProperty:@keypath(self.isValid) withSelector:@selector(flushValidationStateToUI)];
 }
 
 -(void) detachObservers {
@@ -74,11 +71,24 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UITextFieldTextDidEndEditingNotification" object:self];
 }
 
+-(void) textFieldTextDidBeginEditing {
+    _pristine = NO;
+}
+
 #pragma mark - validation
--(void) validate {
+-(BOOL) validate {
+    _pristine = NO;
+    return [self validateTextFieldIgnoreIfPristine];
+}
+
+-(BOOL) validateTextFieldIgnoreIfPristine {
+    if(_pristine) {
+        return YES;
+    }
+    
     //Check is valid
     BOOL valid = YES;
-    NSString *testStr = self.text;
+    NSString *testStr = [self.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if(self.required) {
         valid &= [StringUtil isNotBlank:testStr];
@@ -105,13 +115,21 @@
         valid &= [StringUtil isAlphanumeric:testStr];
     }
     
-    self.isValid = valid;
+    if(self.validationBlock) {
+        valid &= self.validationBlock(testStr);
+    }
+    
+    return self.isValid = valid;
 }
 
 #pragma mark - UI
 -(void) flushValidationStateToUI {
+    if(_pristine) {
+        return;
+    }
+    
     if(self.validationDelegate) {
-        [self.validationDelegate validationStateDidChange:self.isValid];
+        [self.validationDelegate textField:self validationStateDidChange:self.isValid];
         return;
     }
     
@@ -131,9 +149,9 @@
 }
 
 -(void) hasFinishedEditing {
-    if(self.isValid){
+    if([self validate]){
         if(self.validationDelegate) {
-            [self.validationDelegate clearUIValidationState];
+            [self.validationDelegate clearUIValidationStateForTextField:self];
             return;
         }
         self.layer.borderColor = [UIColor clearColor].CGColor;
