@@ -45,13 +45,22 @@ static id<RBValidatingTextFieldDelegate> _defaultDelegate = nil;
 }
 
 -(void) initialise {
-    isValid = YES;
-    _pristine = YES;
+    [self resetValidation];
     self.required = NO;
     self.minLength = -1;
     self.maxLength = INT32_MAX;
     if(!self.validationDelegate) {
         self.validationDelegate = _defaultDelegate;
+    }
+}
+
+-(void) resetValidation {
+    [self resignFirstResponder];
+    self.isValid = YES;
+    _pristine = YES;
+    if(self.validationDelegate && [self.validationDelegate respondsToSelector:@selector(clearUIValidationStateForTextField:)]) {
+        [self.validationDelegate clearUIValidationStateForTextField:self];
+        return;
     }
 }
 
@@ -130,6 +139,7 @@ static id<RBValidatingTextFieldDelegate> _defaultDelegate = nil;
 }
 
 #pragma mark - UI
+
 -(void) flushValidationStateToUI {
     if(_pristine) {
         return;
@@ -145,7 +155,6 @@ static id<RBValidatingTextFieldDelegate> _defaultDelegate = nil;
     if([self validate]){
         if(self.validationDelegate && [self.validationDelegate respondsToSelector:@selector(clearUIValidationStateForTextField:)]) {
             [self.validationDelegate clearUIValidationStateForTextField:self];
-            return;
         }
     }
 }

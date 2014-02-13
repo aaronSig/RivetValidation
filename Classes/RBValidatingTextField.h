@@ -54,5 +54,11 @@
 
 -(void) initialise;
 
+/*
+ * Requests that the validation delegate removes the the UI notifications and resets the text
+ field back to its pristine state.
+ */
+-(void) resetValidation;
+
 @end
 
