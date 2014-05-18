@@ -30,8 +30,8 @@
 @property(nonatomic, readonly) BOOL pristine;
 
 @property(nonatomic, assign) BOOL required;
-@property(nonatomic, assign) int minLength;
-@property(nonatomic, assign) int maxLength;
+@property(nonatomic, assign) NSInteger minLength;
+@property(nonatomic, assign) NSInteger maxLength;
 @property(nonatomic, retain) NSString *validationRegex;
 @property(nonatomic, retain) NSString *validationRule; // email_address, alpha, numeric, alphanumeric
 

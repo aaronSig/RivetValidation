@@ -19,9 +19,9 @@
 +(BOOL) isNumeric:(NSString *) str;
 +(BOOL) string: (NSString *) str onlyContainsCharactersInSet: (NSMutableCharacterSet *) characterSet;
 
-+(BOOL) string:(NSString *) str isLongerThan:(int) minLength;
-+(BOOL) string:(NSString *) str isShorterThan:(int) maxLength;
-+(BOOL) string:(NSString *) str isLongerThan:(int)minLength andShorterThan:(int) maxLength;
++(BOOL) string:(NSString *) str isLongerThan:(NSInteger) minLength;
++(BOOL) string:(NSString *) str isShorterThan:(NSUInteger) maxLength;
++(BOOL) string:(NSString *) str isLongerThan:(NSInteger)minLength andShorterThan:(NSUInteger) maxLength;
 
 +(BOOL) isEmpty:(NSString *) str;
 +(BOOL) isNotEmpty:(NSString *) str;

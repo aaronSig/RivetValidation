@@ -130,24 +130,25 @@ NSString * const EmailRegex = @"(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9
 /** 
  * Checks if a string is longer than minLength chars.
  */
-+(BOOL) string:(NSString *) str isLongerThan:(int) minLength {
-    return [str length] > minLength;
++(BOOL) string:(NSString *) str isLongerThan:(NSInteger) minLength {
+    NSInteger len = (NSInteger) [str length];
+    return len > minLength;
 }
 
 /**
  * Checks if a string is shorter than maxLength chars.
  */
-+(BOOL) string:(NSString *) str isShorterThan:(int) maxLength {
-    return [str length] < maxLength;
++(BOOL) string:(NSString *) str isShorterThan:(NSUInteger) maxLength {
+    NSInteger len = (NSInteger) [str length];
+    return len < maxLength;
 
 }
 
 /**
  * Checks if a string length is in a given range.
  */
-+(BOOL) string:(NSString *) str isLongerThan:(int)minLength andShorterThan:(int) maxLength {
-    int len = [str length];
-    return len > minLength && len < maxLength;
++(BOOL) string:(NSString *) str isLongerThan:(NSInteger)minLength andShorterThan:(NSUInteger) maxLength {
+    return [StringUtil string:str isLongerThan:minLength] && [StringUtil string:str isShorterThan:maxLength];
 }
 
 // Empty checks
