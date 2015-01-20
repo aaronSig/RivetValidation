@@ -88,6 +88,11 @@ static id<RBValidatingTextFieldDelegate> _defaultDelegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UITextFieldTextDidEndEditingNotification" object:self];
 }
 
+-(void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 -(void) textFieldTextDidBeginEditing {
     _pristine = NO;
 }
