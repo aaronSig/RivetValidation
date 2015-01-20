@@ -91,6 +91,7 @@ static id<RBValidatingTextFieldDelegate> _defaultDelegate = nil;
 -(void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removeAllObservations];
 }
 
 -(void) textFieldTextDidBeginEditing {
